@@ -1,22 +1,22 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * main - Entry point of the program
+ * main - Entry point.
+ * @argc: Argument count.
+ * @argv: Argument vector.
  *
- * Return: Always 0.
+ * Return: 0 on success.
  */
-int main(void)
+int main(int argc, char **argv)
 {
-char command[BUFFER_SIZE];
-char *args[BUFFER_SIZE];
-while (1)
-{
-read_command(command);
-parse_command(command, args);
-if (args[0] != NULL)
-{
-execute_command(args);
-}
-}
-return (0);
+	shll_comm datash;
+	(void)argc;
+
+	signal(SIGINT, get_sigint);
+	set_datashell(&datash, argv);
+	looping_shll(&datash);
+	empty_data(&datash);
+	if (datash.stat < 0)
+		return (255);
+	return (datash.stat);
 }
